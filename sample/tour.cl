@@ -1,10 +1,10 @@
 
 {
-    /////////////////////////////
-    // 1. Function declaration //
-    /////////////////////////////
+  /////////////////////////////
+  // 1. Function declaration //
 
-    // Function taking two `i32` parameters and returning another `i32`.
+  /////////////////////////////
+  // Function taking two `i32` parameters and returning another `i32`.
 	add_1 :: (a: i32, b: i32) i32 {
 		return a + b
   }
@@ -28,7 +28,7 @@
 }
 
 {
-	/////////////////////////////
+  /////////////////////////////
   // 2. Variable declaration //
   /////////////////////////////
 
@@ -115,8 +115,8 @@ comptime_number :: some_macro#();
 // They intentionally cannot access any outer scope and are entirely independent.
 // There is a clear distinction between a class API and its implementation, allowing specializers to choose the most appropriate one without side-effect.
 class Object {
-	// Factory function
-	// Must return a new instance of the class
+  // Factory function
+  // Must return a new instance of the class
   ::new();
   // Local functions
   get() i32;
