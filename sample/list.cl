@@ -24,7 +24,9 @@ spe List<T> {
         // All callbacks are called in program order
         // `::new()` is not overrided here, so the default implementation one is used
         push {
-          // TODO resize array
+          if initial_length >= initial_values.length() {
+            initial_values = initial_values.resize(initial_values.length() * 2);
+          }
           initial_values[initial_length] = element;
           initial_length += 1;
         }
