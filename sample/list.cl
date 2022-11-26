@@ -22,7 +22,7 @@ spe List<T> {
     pattern ::new() &&
       (push(_) || pop() || get(const) || set(const, const) || length())... {
         // All callbacks are called in program order
-        // `::new()` is not overrided here, so the default implementation one is used
+        // `::new()` is not overrided here, so the default implementation is used instead
         push {
           if initial_length >= initial_values.length() {
             initial_values = initial_values.resize(initial_values.length() * 2);
