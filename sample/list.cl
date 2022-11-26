@@ -17,8 +17,10 @@ spe List<T> {
     initial_values: [T] = [T; DEFAULT_SIZE];
     // Find pattern starting with `::new()` followed by an unknown amount of constant operations
     // This allow us to constant fold all operations after initialization
+    // `const` is a keyword that guarantee the value to be a compile-time constant
+    // `_` is a wildcard that doesn't offer any guarantees. In this case we do not care whether or not `push` is pushing a constant.
     pattern ::new() &&
-      (push(const) || pop() || get(const) || set(const, const) || length())... {
+      (push(_) || pop() || get(const) || set(const, const) || length())... {
         // All callbacks are called in program order
         // `::new()` is not overrided here, so the default implementation one is used
         push {
