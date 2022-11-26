@@ -11,17 +11,16 @@ spe List<T> {
   // TODO: specializations
 
   impl {
-    foreign malloc(size_t) -> ptr;
-    foreign free(ptr);
-    foreign memcpy(ptr, ptr, size_t) -> ptr;
+    DEFAULT_SIZE :: 16;
 
     initial_length: size_t = 0;
-    initial_values: [T] = [T; 16];
+    initial_values: [T] = [T; DEFAULT_SIZE];
     // Find pattern starting with `::new()` followed by an unknown amount of constant operations
     // This allow us to constant fold all operations after initialization
     pattern ::new() &&
       (push(const) || pop() || get(const) || set(const, const) || length())... {
         // All callbacks are called in program order
+        // `::new()` is not overrided here, so the default implementation one is used
         push {
           // TODO resize array
           initial_values[initial_length] = element;
@@ -39,6 +38,8 @@ spe List<T> {
     }
 
     ::new {
+      // Copy over the potential constant data retrieved from the pattern
+      // Otherwise, the array is empty, and the length 0
       self.array = initial_values.clone();
       self.length = initial_length;
     }
@@ -46,7 +47,7 @@ spe List<T> {
     push {
       if self.length == self.array.length {
         // Resize array
-        self.array = self.array.resize(self.array.length * 2);
+        self.array = self.array.resized(self.array.length * 2);
       }
       self.array[self.length] = element;
       self.length += 1;
