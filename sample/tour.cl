@@ -5,8 +5,8 @@
   /////////////////////////////
 
   // Function taking two `i32` parameters and returning another `i32`.
-	add_1 :: (a: i32, b: i32) i32 {
-		return a + b
+  add_1 :: (a: i32, b: i32) i32 {
+    return a + b
   }
 
   // `return` can be omitted
@@ -44,7 +44,7 @@
 
 // Main function
 main :: () {
-	// Local function
+  // Local function
   add :: (a: i32, b: i32) i32 -> a + b;
   num :: add(1, 2);
 
@@ -67,9 +67,9 @@ main :: () {
   struct_array[0].x = 5;
 
 
-	{
-		defer println("Deferred");
-	} // End of the scope, should print
+  {
+    defer println("Deferred");
+  } // End of the scope, should print
 
   /////////////////////////////////
   // 3. Raw address manipulation //
@@ -136,7 +136,7 @@ class Object {
     // Function implementations have implicit parameters/return type as defined in the class
 
     ::new {
-      return Object { value: 1 };
+      self.value = 1;
     }
 
     set {
@@ -175,14 +175,14 @@ spe Object {
   // Declarations are allowing in the specializer context
   get_count: i32 = 0;
 
-	where ::new, set(const) {
+	where ::new(), set(const), get() {
     // Object has been initialized using `Object::new()` and `set` has been guaranteed to only be called using constant(s)
-    // `get` is ignored, may or may not be called
+    // Unmentioned functions are not called
 
     set(value) {
     }
 
     impl {
     }
-	}
+  }
 }
