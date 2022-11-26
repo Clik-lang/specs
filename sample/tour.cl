@@ -134,9 +134,9 @@ main :: () {
   // This can for example be used to declare an array as SOA (Structure of Arrays) instead of AOS (Array of Structures)
   // without needing third party libraries support.
   // The layout syntax is defined by rules surrounded by vertical bars `|<rules>|`.
-  // TODO: should this return a raw pointer or an array?
-  layout_array: ptr : |x| [Point { x: 5, y: 2 }, Point { x: 3, y: 4 }];
-  // layout_array: ptr : |x| struct_array; // This is equivalent to the previous line
+  points: [Point] : |x| [Point { x: 1, y: 2 }, Point { x: 3, y: 4 }];
+  for x in points -> print(x); // Prints 1, 3
+  // for y in points_transform <- compile error, y is not defined
 }
 
 ///////////////
