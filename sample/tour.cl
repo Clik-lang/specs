@@ -169,24 +169,3 @@ main_class :: () {
   object.set(2);
   assert object.get() == 2;
 }
-
-/////////////////////////////////
-// 7. Specializers & Templates //
-/////////////////////////////////
-
-// As mentioned, specializers have for goal to decide on the most appropriate class implementation to use depending on the context
-spe Object {
-  // Declarations are allowing in the specializer context
-  get_count: i32 = 0;
-
-	where ::new(), set(const), get() {
-    // Object has been initialized using `Object::new()` and `set` has been guaranteed to only be called using constant(s)
-    // Unmentioned functions are not called
-
-    set(value) {
-    }
-
-    impl {
-    }
-  }
-}
