@@ -16,7 +16,7 @@ spe Object {
 
   // Enter the block if all function contraints are met
   // Syntax: `impl [<constraints> <block>]`
-	impl ::new(), set(const), get() {
+  impl ::new(), set(const), get() {
     // Object has been initialized using `Object::new()` and `set` has been guaranteed to only be called using constant(s)
     // Unmentioned functions are guaranteed to not be called.
 
