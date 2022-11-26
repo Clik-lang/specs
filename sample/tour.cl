@@ -71,8 +71,48 @@ main :: () {
     defer println("Deferred");
   } // End of the scope, should print
 
+  //////////////////
+  // 3. Branching //
+  //////////////////
+  {
+    number :: 5;
+    // Syntax: `if <condition> <block> [else <statement>]`
+    if number == 5 -> print("Branch taken!");
+    if number == 5 {
+      print("Branch taken!");
+    }else if(number == 6) {
+      print("Branch not taken!");
+    }
+
+    // If blocks take an optional primary expression, and a list of potential branches to be taken.
+    // Execution does not stop after a branch is taken.
+    // Syntax: `if [<condition_part>] (<condition> <block>)...
+    if {
+      number == 5 -> print("Branch taken!");
+      number >= 5 -> print("Branch taken!");
+      number == 6 -> print("Invalid!");
+      else -> print("AlsoInvalid!");
+    }
+
+    if number {
+      == 5 -> print("Branch taken!");
+      >= 5 -> print("Branch taken!");
+      == 6 -> print("Invalid!");
+      else -> print("AlsoInvalid!");
+    }
+
+    // Match blocks are the same as if's, except that only the first successful branch is taken.
+    match number {
+      == 5 -> print("Branch taken!");
+      >= 5 -> print("Invalid!");
+      == 6 -> print("Invalid!");
+      else -> print("Invalid!");
+    }
+  }
+
+
   /////////////////////////////////
-  // 3. Raw address manipulation //
+  // 4. Raw address manipulation //
   /////////////////////////////////
 
   // Data can be extracted from raw addresses using the `ptr` type
@@ -87,7 +127,7 @@ main :: () {
   }
 
   //////////////////////
-  // 4. Memory layout //
+  // 5. Memory layout //
   //////////////////////
 
   // Layout can be defined for array expressions in order to precise how elements should be laid out in memory
@@ -100,7 +140,7 @@ main :: () {
 }
 
 ///////////////
-// 5. Macros //
+// 6. Macros //
 ///////////////
 
 // Macros are used to insert arbitrary code from compile-time string
@@ -112,7 +152,7 @@ main :: () {
 }
 
 //////////////////////////
-// 6. Class declaration //
+// 7. Class declaration //
 //////////////////////////
 
 // Classes are containers combining a structure & local functions.
