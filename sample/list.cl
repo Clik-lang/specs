@@ -15,53 +15,57 @@ spe List<T> {
     foreign free(ptr);
     foreign memcpy(ptr, ptr, size_t) -> ptr;
 
+    initial_length: size_t = 0;
+    initial_values: [T] = [T; 16];
+    // Find pattern starting with `::new()` followed by an unknown amount of constant operations
+    // This allow us to constant fold all operations after initialization
+    pattern ::new() &&
+      (push(const) || pop() || get(const) || set(const, const) || length())... {
+        // All callbacks are called in program order
+        push {
+          // TODO resize array
+          initial_values[initial_length] = element;
+          initial_length += 1;
+        }
+        pop -> initial_length -= 1;
+        get -> initial_values[index];
+        set -> initial_values[index] = element;
+        length -> initial_length;
+    }
+
     struct {
-      address: ptr,
-      address_length: size_t,
+      array: [T]
       length: size_t,
     }
 
-    size :: #sizeof(T);
-
     ::new {
-      initialSize = size * 16;
-      self.address = malloc(initialSize);
-      self.address_length = initialSize;
-      self.length = 0;
+      self.array = initial_values.clone();
+      self.length = initial_length;
     }
 
     push {
-      target :: size * (self.length + 1);
-      if target + size > self.address_length {
-        new_address_length = self.address_length * 2;
-        new_address :: malloc(new_address_length);
-        memcpy(new_address, self.address, self.address_length);
-        free(self.address);
-        self.address = new_address;
-        self.address_length = new_address_length;
+      if self.length == self.array.length {
+        // Resize array
+        self.array = self.array.resize(self.array.length * 2);
       }
-      address.store<T>(self.length, element);
+      self.array[self.length] = element;
       self.length += 1;
     }
 
     pop {
       self.length -= 1;
-      address.load<T>(self.length);
+      self.array[self.length];
     }
 
     get {
-      address.load<T>(index);
+      self.array[index];
     }
 
     set {
-      address.store<T>(index, element);
+      self.array[index] = element;
     }
 
     length -> self.length;
-
-    defer {
-      free(self.address);
-    }
   }
 }
 
