@@ -2,8 +2,8 @@
 {
   /////////////////////////////
   // 1. Function declaration //
-
   /////////////////////////////
+
   // Function taking two `i32` parameters and returning another `i32`.
 	add_1 :: (a: i32, b: i32) i32 {
 		return a + b
@@ -159,11 +159,11 @@ class Object {
 }
 
 main_class :: () {
-	// Class instantiation
-	object :: Object::new();
-	assert object.get() == 1;
-	object.set(2);
-	assert object.get() == 2;
+  // Class instantiation
+  object :: Object::new();
+  assert object.get() == 1;
+  object.set(2);
+  assert object.get() == 2;
 }
 
 /////////////////////////////////
@@ -172,17 +172,17 @@ main_class :: () {
 
 // As mentioned, specializers have for goal to decide on the most appropriate class implementation to use depending on the context
 spe Object {
-	// Declarations are allowing in the specializer context
-	get_count: i32 = 0;
+  // Declarations are allowing in the specializer context
+  get_count: i32 = 0;
 
 	where ::new, set(const) {
-		// Object has been initialized using `Object::new()` and `set` has been guaranteed to only be called using constant(s)
-		// `get` is ignored, may or may not be called
+    // Object has been initialized using `Object::new()` and `set` has been guaranteed to only be called using constant(s)
+    // `get` is ignored, may or may not be called
 
-		set(value) {
-		}
+    set(value) {
+    }
 
-		impl {
-		}
+    impl {
+    }
 	}
 }
