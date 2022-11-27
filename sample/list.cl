@@ -2,9 +2,10 @@ class List<T> {
   ::new();
   push(element: T);
   pop() T;
-  get(index: size_t) T;
-  set(index: size_t, element: T);
-  length() size_t;
+  get(index: usize) T;
+  set(index: usize, element: T);
+  length() usize;
+  collect(layout: |T| = #default_layout(T)) [T];
 }
 
 spe List<T> {
@@ -13,7 +14,7 @@ spe List<T> {
   impl {
     DEFAULT_SIZE :: 16;
 
-    initial_length: size_t = 0;
+    initial_length: usize = 0;
     initial_values: [T] = [T; DEFAULT_SIZE];
     // Find pattern starting with `::new()` followed by an unknown amount of constant operations
     // This allow us to constant fold all operations after initialization
@@ -37,8 +38,8 @@ spe List<T> {
     }
 
     struct {
-      array: [T]
-      length: size_t,
+      array: [T],
+      length: usize,
     }
 
     ::new {
@@ -47,7 +48,6 @@ spe List<T> {
       self.array = initial_values.clone();
       self.length = initial_length;
     }
-
     push {
       if self.length == self.array.length {
         // Resize array
@@ -56,25 +56,23 @@ spe List<T> {
       self.array[self.length] = element;
       self.length += 1;
     }
-
     pop {
       self.length -= 1;
       self.array[self.length];
     }
-
     get {
       self.array[index];
     }
-
     set {
       self.array[index] = element;
     }
-
     length -> self.length;
+    collect -> |layout| self.array.slice(0, self.length);
   }
 }
 
-test "list" {
+test "List" {
+  // `list` should be entirely constant folded thanks to the pattern
   list :: List<i32>::new();
   assert list.length() == 0;
 
@@ -86,4 +84,22 @@ test "list" {
   assert list.get(0) == 2;
   assert list.pop() == 2;
   assert list.length() == 0;
+}
+test "List.collect" {
+  list :: List<i32>::new();
+  list.push(1);
+  list.push(2);
+  list.push(3);
+  assert list.collect() == [1, 2, 3];
+}
+test "List.collect(layout)" {
+  Point :: struct { x: i32, y: i32 }
+  list :: List<Point>::new();
+  list.push(Point { x: 1, y: 2 });
+  list.push(Point { x: 3, y: 4 });
+  list.push(Point { x: 5, y: 6 });
+  layout :: |x|;
+  collect :: list.collect(layout);
+  // Compare x components [1, 3, 5]
+  assert collect == |layout| [Point { x: 1, y: 2 }, Point { x: 3, y: 4 }, Point { x: 5, y: 6 }];
 }

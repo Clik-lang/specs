@@ -147,7 +147,7 @@ main :: () {
 {
   number: i32 : #insert { "5" }; // Insert code as string
   number_2: i32 : #insert -> "5" ;
-  size: size_t : #size(i32); // Get the size of any type in bytes
+  size: usize : #size(i32); // Get the size of any type in bytes
   is_constant: bool : #is_constant(5); // Check if an expression is constant
 }
 
