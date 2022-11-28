@@ -32,7 +32,7 @@ layout :: () {
 
   // Allocate a point array where only the `x` component matter, ultimately `[i32]`
   // The type remains `Point` but the layout is changed, and unspecified components are innaccessible
-  points_x: [Point|x|] : |x| get_points();
+  points_x: [Point{x}] : |x| get_points();
   for .x in points_x -> print(x); // Prints 1, 3
   // The `y` component is unused, and thus innaccessible
   // for y in points_x <- compile error, y is not defined
@@ -43,7 +43,7 @@ layout :: () {
 
 layout_pointer :: () {
   // Although arrays with custom layout can be used as normal, the backed memory does reflect the change.
-  points_x: [Point|x|] : |x| [Point { x: 1, y: 0 }, Point { x: 2, y: 0 }, Point { x: 3, y: 0 }];
+  points_x: [Point{x}] : |x| [Point { x: 1, y: 0 }, Point { x: 2, y: 0 }, Point { x: 3, y: 0 }];
   assert points_x.length() == 3;
   // Get a pointer pointing to a continuous block of Point's `x` components [1, 2, 3]
   pointer : ptr : points_x.as_ptr(); // Get a pointer to the array
