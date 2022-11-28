@@ -41,3 +41,19 @@ layout :: () {
   points_y :: |y| get_points();
   for y in points_y -> print(y); // Prints 2, 4
 }
+
+layout_pointer :: () {
+  // Although arrays with custom layout can be used as normal, the backed memory does reflect the change.
+  points_x: [Point] : |x| [Point { x: 1, y: 0 }, Point { x: 2, y: 0 }, Point { x: 3, y: 0 }];
+  assert points_x.length() == 3;
+  // Get a pointer pointing to a continuous block of Point's `x` components [1, 2, 3]
+  pointer : ptr : points_x.as_ptr(); // Get a pointer to the array
+
+  x_1 :: pointer.load<i32>(0);
+  x_2 :: pointer.load<i32>(1);
+  x_3 :: pointer.load<i32>(2);
+
+  assert x_1 == 1;
+  assert x_2 == 2;
+  assert x_3 == 3;
+}
