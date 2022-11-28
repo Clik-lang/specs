@@ -157,7 +157,7 @@ main :: () {
   // The layout syntax is defined by rules surrounded by vertical bars `|<rules>|`.
   // Layouts are reflected in the type: `[<type>]` becomes `[<type>{<component_1>, <component_2>, ...}]`.
   points: [Point] : [Point { x: 1, y: 2 }, Point { x: 3, y: 4 }];
-  points_xy: [Point{x, y}] : |x, y| points; // Essentially the same, but more strictly typed
+  points_xy: [Point{x, y}] : |(x, y)| points; // Essentially the same, but more strictly typed
   points_x: [Point{x}] : |x| points_xy; // Remove the `y` component
   for .x in points_x -> print(x); // Prints 1, 3
   // for .y in points_x <- compile error, `y` is not defined

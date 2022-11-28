@@ -26,9 +26,11 @@ get_points :: () [Point] {
 layout :: () {
   // |x| -> retrieve the `x` component
   // |y| -> retrieve the `y` component
-  // |x, y| -> retrieve the `x` and `y` components
-  // |x.., y..| -> SOA layout with `x` and `y` components
-  // |x+++, y+++| -> AoSoA layout where components are grouped by 4
+  // |(x, y)| -> AoS layout with `x` and `y` components
+  // |x.., y..| -> SoA layout with `x` and `y` components
+  // |(x+++, y+++)| -> AoSoA layout where components are grouped by 4
+  // |(x, y)~| -> AoS layout with each element aligned to the cache line size
+  // |(x+++, y+++)~| -> AoSoA layout cache line aligned
 
   // Allocate a point array where only the `x` component matter, ultimately `[i32]`
   // The type remains `Point` but the layout is changed, and unspecified components are innaccessible
