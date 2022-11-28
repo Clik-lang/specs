@@ -169,6 +169,7 @@ main :: () {
 
 // Macros are explicit compiler intrinsics increasing the language flexibility
 {
+  line: i32 : #line; // Current line number
   number: i32 : #insert { "5" }; // Insert code as string
   number_2: i32 : #insert -> "5" ;
   size: usize : #size(i32); // Get the size of any type in bytes
