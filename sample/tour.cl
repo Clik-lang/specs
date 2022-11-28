@@ -55,25 +55,26 @@ main :: () {
   }
 
   // Struct instantiation
-  point :: Point { x: 1, y: 2 };
-  assert point.x == 1;
-  assert point.y == 2;
+  {
+    point :: Point { x: 1, y: 2 };
+    assert point.x == 1;
+    assert point.y == 2;
 
-  array :: [1, 2];
-  assert array(0) == 1;
-  assert array(1) == 2;
+    array :: [1, 2];
+    assert array(0) == 1;
+    assert array(1) == 2;
 
-  struct_array: [Point] : [Point { x: 1, y: 2 }, Point { x: 3, y: 4 }];
-  struct_array(0).x = 5;
-
+    struct_array: [Point] : [Point { x: 1, y: 2 }, Point { x: 3, y: 4 }];
+    struct_array(0).x = 5;
+  }
 
   {
     defer println("Deferred");
   } // End of the scope, should print
 
-  //////////////////
-  // 3. Branching //
-  //////////////////
+  /////////////////////
+  // 3. Control flow //
+  /////////////////////
   {
     number :: 5;
     // Syntax: `if <condition> <block> [else <statement>]`
@@ -108,6 +109,25 @@ main :: () {
       == 6 -> print("Invalid!");
       else -> print("Invalid!");
     }
+
+    // Looping
+    points :: [Point { x: 1, y: 2 }, Point { x: 3, y: 4 }];
+    // Iterate over a struct array
+    for point in points -> print(point.x);
+    // Iterate over a struct's components
+    for .x in points -> print(x);
+    for (.x, .y) in points -> print(x, y);
+
+    // Iterate over a range
+    for i in 0..10 -> print(i);
+    // Iterate over a range with a step
+    for i in 0..10..2 -> print(i);
+    // Iterate over a range with a step and a condition
+    for i in 0..10..2 < 5 -> print(i);
+    // Same but without the index
+    for 0..10 -> print("Looping!");
+    for 0..10..2 -> print("Looping!");
+    for 0..10..2 < 5 -> print("Looping!");
   }
 
 
@@ -134,9 +154,11 @@ main :: () {
   // This can for example be used to declare an array as SOA (Structure of Arrays) instead of AOS (Array of Structures)
   // without needing third party libraries support.
   // The layout syntax is defined by rules surrounded by vertical bars `|<rules>|`.
-  points: [Point] : |x| [Point { x: 1, y: 2 }, Point { x: 3, y: 4 }];
-  for x in points -> print(x); // Prints 1, 3
-  // for y in points_transform <- compile error, y is not defined
+  // Layouts are reflected in the type: `[<type>]` becomes `[<type>|<component_1>, <component_2>, ...|]`.
+  points: [Point] : [Point { x: 1, y: 2 }, Point { x: 3, y: 4 }];
+  points_layout: [Point|x|] : |x| points;
+  for .x in points_layout -> print(x); // Prints 1, 3
+  // for .y in points_layout <- compile error, `y` is not defined
 }
 
 ///////////////
