@@ -130,6 +130,14 @@ main :: () {
     for 0..10 -> print("Looping!");
     for 0..10..2 -> print("Looping!");
     for 0..10..2 < 5 -> print("Looping!");
+    // Infinite loop
+    for -> print("Looping!");
+
+    // "while" loops
+    {
+      count := 0;
+      for count < 5 -> count = count + 1;
+    }
   }
 
   /////////////////////////////////
