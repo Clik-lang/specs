@@ -7,7 +7,7 @@ Point :: struct {
 // `[T]` is a language shortcut for `Array<T>`, which is a standard language class
 // The `Array` class represents a fixed-size array of elements typed `T`
 // TODO: should array be responsible for storing the layout?
-points: [Point] : [Point { x: 1, y: 2 }, Point { x: 3, y: 4 }];
+points: [Point] : Point[{ x: 1, y: 2 }, { x: 3, y: 4 }];
 
 array :: () {
   function_getter :: points.get(0); // `Array#get(usize)`
@@ -20,7 +20,7 @@ get_points :: () [Point] {
   // `#return_layout` retrieves the array layout at the call site return
   // e.g. `_ :: |x| get_points()`
   // The compiler may automatically infer the layout (assuming no pointer operations)
-  return |#return_layout| [Point { x: 1, y: 2 }, Point { x: 3, y: 4 }];
+  return |#return_layout| Point[{ x: 1, y: 2 }, { x: 3, y: 4 }];
 }
 
 layout :: () {
@@ -45,7 +45,7 @@ layout :: () {
 
 layout_pointer :: () {
   // Although arrays with custom layout can be used as normal, the backed memory does reflect the change.
-  points_x: [Point{x}] : |x| [Point { x: 1, y: 0 }, Point { x: 2, y: 0 }, Point { x: 3, y: 0 }];
+  points_x: [Point{x}] : |x| Point[{ x: 1, y: 0 }, { x: 2, y: 0 }, { x: 3, y: 0 }];
   assert points_x.length() == 3;
   // Get a pointer pointing to a continuous block of Point's `x` components [1, 2, 3]
   pointer : ptr : points_x.as_ptr(); // Get a pointer to the array

@@ -99,7 +99,7 @@ test "List.collect() with layout" {
   list.push(Point { x: 3, y: 4 });
   list.push(Point { x: 5, y: 6 });
   collect :: |x| list.collect();
-  expected :: |x| [Point { x: 1, y: 2 }, Point { x: 3, y: 4 }, Point { x: 5, y: 6 }];
+  expected :: |x| Point[{ x: 1, y: 2 }, { x: 3, y: 4 }, { x: 5, y: 6 }];
   // Compare `x` components [1, 3, 5]
   assert collect == expected;
 }
