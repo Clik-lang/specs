@@ -5,7 +5,7 @@ class List<T> {
   get(index: usize) T;
   set(index: usize, element: T);
   length() usize;
-  collect(layout: |T| = #default_layout(T)) [T];
+  collect() [T];
 }
 
 spe List<T> {
@@ -67,7 +67,7 @@ spe List<T> {
       self.array[index] = element;
     }
     length -> self.length;
-    collect -> |layout| self.array.slice(0, self.length);
+    collect -> |#return_layout| self.array.slice(0, self.length);
   }
 }
 
@@ -92,14 +92,14 @@ test "List.collect" {
   list.push(3);
   assert list.collect() == [1, 2, 3];
 }
-test "List.collect(layout)" {
+test "List.collect() with layout" {
   Point :: struct { x: i32, y: i32 }
   list :: List<Point>::new();
   list.push(Point { x: 1, y: 2 });
   list.push(Point { x: 3, y: 4 });
   list.push(Point { x: 5, y: 6 });
-  layout :: |x|;
-  collect :: list.collect(layout);
-  // Compare x components [1, 3, 5]
-  assert collect == |layout| [Point { x: 1, y: 2 }, Point { x: 3, y: 4 }, Point { x: 5, y: 6 }];
+  collect :: |x| list.collect();
+  expected :: |x| [Point { x: 1, y: 2 }, Point { x: 3, y: 4 }, Point { x: 5, y: 6 }];
+  // Compare `x` components [1, 3, 5]
+  assert collect == expected;
 }
