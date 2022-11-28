@@ -167,7 +167,7 @@ main :: () {
 // 6. Macros //
 ///////////////
 
-// Macros are used to insert arbitrary code from compile-time string
+// Macros are explicit compiler intrinsics increasing the language flexibility
 {
   number: i32 : #insert { "5" }; // Insert code as string
   number_2: i32 : #insert -> "5" ;
