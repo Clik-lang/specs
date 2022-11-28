@@ -1,9 +1,10 @@
-/////////////////////////////////
+//////////////////////////////
 // Specializers & Templates //
-/////////////////////////////////
+//////////////////////////////
 
+// Class definition
 Class Object{
-  ::new();
+  ::new(); // Factory function, implicitly returns an instance of the class
   get() i32;
   set(value: i32);
 }
