@@ -65,7 +65,7 @@ spe Object {
 class Annotated {
   ::new();
   get() i32;
-  @!immutable set(value: i32);
+  @immutable set(value: i32); // `set` is not callable on an immutable instance
   impl {
     struct {
       value: i32,
