@@ -41,7 +41,7 @@ spe Object {
     }
     ::new -> self.value = 0;
     set -> self.value = value;
-    get -> return self.value;
+    get -> self.value;
   }
 
   // Default implementation, no contraints
@@ -51,6 +51,6 @@ spe Object {
     }
     ::new -> self.value = 0;
     set -> self.value = value;
-    get -> return self.value;
+    get -> self.value;
   }
 }

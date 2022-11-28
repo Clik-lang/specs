@@ -172,6 +172,7 @@ main :: () {
   number_2: i32 : #insert -> "5" ;
   size: usize : #size(i32); // Get the size of any type in bytes
   is_constant: bool : #is_constant(5); // Check if an expression is a compile-time constant
+  is_escaping: bool : #is_escaping(number); // Check if an expression is escaping, can be used to decide between stack and heap allocation
 }
 
 //////////////////////////
