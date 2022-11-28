@@ -60,11 +60,11 @@ main :: () {
   assert point.y == 2;
 
   array :: [1, 2];
-  assert array[0] == 1;
-  assert array[1] == 2;
+  assert array(0) == 1;
+  assert array(1) == 2;
 
   struct_array: [Point] : [Point { x: 1, y: 2 }, Point { x: 3, y: 4 }];
-  struct_array[0].x = 5;
+  struct_array(0).x = 5;
 
 
   {

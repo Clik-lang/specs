@@ -5,6 +5,8 @@ Point :: struct {
 
 // Array declaration
 // `[T]` is a language shortcut for `Array<T>`, which is a standard language class
+// The `Array` class represents a fixed-size array of elements typed `T`
+// TODO: should array be responsible for storing the layout?
 points: [Point] : [Point { x: 1, y: 2 }, Point { x: 3, y: 4 }];
 
 array :: () {
