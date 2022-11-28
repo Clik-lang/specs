@@ -45,8 +45,10 @@
 // Main function
 main :: () {
   // Local function
-  add :: (a: i32, b: i32) i32 -> a + b;
-  num :: add(1, 2);
+  {
+    add :: (a: i32, b: i32) i32 -> a + b;
+    num :: add(1, 2);
+  }
 
   // Struct declaration
   Point :: struct {
@@ -130,7 +132,6 @@ main :: () {
     for 0..10..2 < 5 -> print("Looping!");
   }
 
-
   /////////////////////////////////
   // 4. Raw address manipulation //
   /////////////////////////////////
@@ -170,7 +171,7 @@ main :: () {
   number: i32 : #insert { "5" }; // Insert code as string
   number_2: i32 : #insert -> "5" ;
   size: usize : #size(i32); // Get the size of any type in bytes
-  is_constant: bool : #is_constant(5); // Check if an expression is constant
+  is_constant: bool : #is_constant(5); // Check if an expression is a compile-time constant
 }
 
 //////////////////////////
