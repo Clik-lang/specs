@@ -23,6 +23,12 @@
     return add_1(a, b)
   }
 
+  tuple :: () i32, i32 {
+    return 1, 2;
+  }
+
+  tuple_2 :: () i32, i32 -> 1, 2;
+
   // Function can take other function pointers as parameters
   callback :: (fn: (i32, i32) i32) i32 -> fn(1, 2);
 }
@@ -50,14 +56,15 @@ main :: () {
     num :: add(1, 2);
   }
 
-  // Struct declaration
-  Point :: struct {
+  ///////////////
+  // Structure //
+  ///////////////
+  {
+    Point :: struct {
       x: i32,
       y: i32
-  }
+    }
 
-  // Struct instantiation
-  {
     point :: Point { x: 1, y: 2 };
     assert point.x == 1;
     assert point.y == 2;
@@ -70,6 +77,20 @@ main :: () {
     struct_array(0).x = 5;
     // Equivalent to:
     struct_array_2: [Point] : [Point { x: 1, y: 2 }, Point { x: 3, y: 4 }];
+  }
+
+  ///////////
+  // Union //
+  ///////////
+  {
+    Value :: union {
+      number: i32,
+      point: struct { x: i32, y: i32 },
+    }
+    v_num :: Value { number: 1 };
+    v_point :: Value { point: Point { x: 1, y: 2 } };
+    // Verify an union value type
+    // TODO
   }
 
   {
@@ -185,6 +206,7 @@ main :: () {
   size: usize : #size(i32); // Get the size of any type in bytes
   is_constant: bool : #is_constant(5); // Check if an expression is a compile-time constant
   is_escaping: bool : #is_escaping(number); // Check if an expression is escaping, can be used to decide between stack and heap allocation
+  // #panic("Error message"); // Panic with an error message
 }
 
 //////////////////////////
