@@ -83,7 +83,7 @@ main :: () {
     if number == 5 -> print("Branch taken!");
     if number == 5 {
       print("Branch taken!");
-    }else if number == 6 {
+    } else if number == 6 {
       print("Branch not taken!");
     }
 
