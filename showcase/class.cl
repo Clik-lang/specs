@@ -3,7 +3,7 @@
 //////////////////////////////
 
 // Class definition
-Class Object {
+class Object {
   ::new(); // Factory function, implicitly returns an instance of the class
   get() i32;
   set(value: i32);
