@@ -23,11 +23,11 @@
     return add_1(a, b)
   }
 
-  tuple :: () i32, i32 {
+  tuple :: () (i32, i32) {
     return 1, 2;
   }
 
-  tuple_2 :: () i32, i32 -> 1, 2;
+  tuple_2 :: () (i32, i32) -> 1, 2;
 
   // Function can take other function pointers as parameters
   callback :: (fn: (i32, i32) i32) i32 -> fn(1, 2);
@@ -54,6 +54,11 @@ main :: () {
   {
     add :: (a: i32, b: i32) i32 -> a + b;
     num :: add(1, 2);
+
+    tuple :: () (i32, i32) -> 1, 2;
+    result: (i32, i32) = tuple();
+    assert result.0 == 1;
+    assert result.1 == 2;
   }
 
   ///////////////
@@ -77,6 +82,16 @@ main :: () {
     struct_array(0).x = 5;
     // Equivalent to:
     struct_array_2: [Point] : [Point { x: 1, y: 2 }, Point { x: 3, y: 4 }];
+
+    Tuple :: struct {
+      coord: (x: i32, y: i32),
+    }
+    unamed :: Unamed { coord: (1, 2) };
+    coord: (i32, i32) = unamed.coord;
+    assert coord.0 == 1;
+    assert coord.1 == 2;
+    assert coord.x == 1;
+    assert coord.y == 2;
   }
 
   ///////////
