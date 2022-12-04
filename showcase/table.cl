@@ -53,7 +53,7 @@ ecs :: () {
   }
 
   Entities :: table Entity;
-  insert Entities {id: 0, components: [{Position {x: 0, y: 0}}]}
+  insert Entities {id: 0, components: [Position {x: 0, y: 0}]}
 
   // TODO improve query and better control over components layout
   positions: [Position] : select Entities |components.Position|;
