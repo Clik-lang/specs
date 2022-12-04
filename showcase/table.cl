@@ -3,22 +3,16 @@ Player :: struct {
     score: i32,
 }
 
-PlayerEntry :: struct {
-  // `using` allow the use of `name` and `score` as if they were
-  // fields of the table. (instead of `player.name` and `player.score`)
-  using player: Player
-}
-
 basics :: () {
-  // Table declaration. In this case storing a `PlayerEntry` struct.
-  players :: table PlayerEntry;
+  // Table declaration. In this case storing a `Player` struct.
+  players :: table Player;
   // Insertion of a new entry.
   // Syntax: `insert <table> <element>`
   insert players {name: "John", score: 10}
   // Retrieve the player "John"
   // Syntax: `select <table> [<layout>] [{<field>: <value_predicate>, ...}]`
   // Returns a list of elements matching the predicate.
-  select_result: [PlayerEntry] : select players {name: "John"}
+  select_result: [Player] : select players {name: "John"}
 
   // Increment the score of the player "John"
   // Syntax: `update <table> [<layout>] [{<field>: <value_predicate>, ...}] <update>`
@@ -28,14 +22,14 @@ basics :: () {
   // Delete the player "John"
   // Syntax: `delete <table> [<layout>] [{<field>: <value_predicate>, ...}]`
   // Returns a list of elements matching the predicate.
-  delete_result: [PlayerEntry] : delete players {name: "John"}
+  delete_result: [Player] : delete players {name: "John"}
 }
 
 layout :: () {
-  players :: table PlayerEntry;
+  players :: table Player;
   insert players {name: "John", score: 10}
   // Retrieve an array of scores.
-  result: [PlayerEntry{score}] : select players |score|;
+  result: [Player{score}] : select players |score|;
   // Merge the scores
   merge: i32 = 0;
   for .score in result -> merge += score;
