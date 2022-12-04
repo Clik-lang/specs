@@ -34,3 +34,28 @@ layout :: () {
   merge: i32 = 0;
   for .score in result -> merge += score;
 }
+
+ecs :: () {
+  Component :: union {
+    Position :: struct {
+      x: i32,
+      y: i32,
+    },
+    Velocity :: struct {
+      x: i32,
+      y: i32,
+    },
+  }
+
+  Entity :: struct {
+    id: i32,
+    components: [Component],
+  }
+
+  Entities :: table Entity;
+  insert Entities {id: 0, components: [{Position {x: 0, y: 0}}]}
+
+  // TODO improve query and better control over components layout
+  positions: [Position] : select Entities |components.Position|;
+  for position in positions -> print(position);
+}
