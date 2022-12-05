@@ -37,14 +37,8 @@ layout :: () {
 
 ecs :: () {
   Component :: union {
-    Position :: struct {
-      x: i32,
-      y: i32,
-    },
-    Velocity :: struct {
-      x: i32,
-      y: i32,
-    },
+    Position :: struct {x: i32, y: i32},
+    Velocity :: struct {x: i32, y: i32},
   }
 
   Entity :: struct {
