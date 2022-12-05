@@ -35,12 +35,12 @@ layout :: () {
   // Allocate a point array where only the `x` component matter, ultimately `[i32]`
   // The type remains `Point` but the layout is changed, and unspecified components are innaccessible
   points_x: [Point{x}] : |x| get_points();
-  for .x in points_x -> print(x); // Prints 1, 3
+  for .x: points_x -> print(x); // Prints 1, 3
   // The `y` component is unused, and thus innaccessible
-  // for y in points_x <- compile error, y is not defined
+  // for y: points_x <- compile error, y is not defined
 
   points_y :: |y| get_points();
-  for .y in points_y -> print(y); // Prints 2, 4
+  for .y: points_y -> print(y); // Prints 2, 4
 }
 
 layout_pointer :: () {

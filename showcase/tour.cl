@@ -153,17 +153,17 @@ main :: () {
     // Looping
     points :: Point[{ x: 1, y: 2 }, { x: 3, y: 4 }];
     // Iterate over a struct array
-    for point in points -> print(point.x);
+    for point: points -> print(point.x);
     // Iterate over a struct's components
-    for .x in points -> print(x);
-    for (.x, .y) in points -> print(x, y);
+    for .x: points -> print(x);
+    for (.x, .y): points -> print(x, y);
 
     // Iterate over a range
-    for i in 0..10 -> print(i);
+    for i: 0..10 -> print(i);
     // Iterate over a range with a step
-    for i in 0..10..2 -> print(i);
+    for i: 0..10..2 -> print(i);
     // Iterate over a range with a step and a condition
-    for i in 0..10..2 < 5 -> print(i);
+    for i: 0..10..2 < 5 -> print(i);
     // Same but without the index
     for 0..10 -> print("Looping!");
     for 0..10..2 -> print("Looping!");
@@ -205,8 +205,8 @@ main :: () {
   points: [Point] : Point[{ x: 1, y: 2 }, { x: 3, y: 4 }];
   points_xy: [Point{x, y}] : |(x, y)| points; // Essentially the same, but more strictly typed
   points_x: [Point{x}] : |x| points_xy; // Remove the `y` component
-  for .x in points_x -> print(x); // Prints 1, 3
-  // for .y in points_x <- compile error, `y` is not defined
+  for .x: points_x -> print(x); // Prints 1, 3
+  // for .y: points_x <- compile error, `y` is not defined
 }
 
 ///////////////

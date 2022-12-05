@@ -32,7 +32,7 @@ layout :: () {
   result: [Player{score}] : select players |score|;
   // Merge the scores
   merge: i32 = 0;
-  for .score in result -> merge += score;
+  for .score: result -> merge += score;
 }
 
 ecs :: () {
@@ -51,5 +51,5 @@ ecs :: () {
 
   // TODO improve query and better control over components layout
   positions: [Position] : select Entities |components.Position|;
-  for position in positions -> print(position);
+  for position: positions -> print(position);
 }
