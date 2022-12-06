@@ -12,6 +12,17 @@
   }
 }
 
+// ARAYS
+// Arrays have the type `[<type]` and are initialized using `[<expression>, ...]`
+{
+  numbers: [i32] : [1, 2, 3, 4, 5];
+  // Array expression type can be explicit by prefixing the brackets with the type.
+  numbers_2 :: i32[1, 2, 3, 4, 5];
+
+  element :: numbers[0];
+  numbers[0] = element + 1;
+}
+
 // ENUMS
 // Enums are a special type of data structure that can be used to
 // represent a fixed set of values.
@@ -72,4 +83,25 @@
     B,
     C,
   }
+}
+
+// SETS
+// Sets are arrays that can only contain a single element of each type (support for `union` and `enum`)
+// The syntax is similar to arrays but using `<>` instead of square brackets.
+{
+  Component :: union {
+    Position :: struct {x: i32, y: i32},
+    Velocity :: struct {x: i32, y: i32},
+  }
+
+  set: <Component> : <Position {x: 1, y: 2}, Velocity {x: 3, y: 4}>;
+  // Explicit expression type
+  set_2 :: Component<Position {x: 1, y: 2}, Velocity {x: 3, y: 4}>;
+  // Iteration
+  for component: set -> print(component);
+  // Retrieve individual elements
+  position :: set<Position>;
+  velocity :: set<Velocity>;
+
+  set<Position> = {x: 1, y: 2};
 }

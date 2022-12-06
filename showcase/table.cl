@@ -43,13 +43,13 @@ ecs :: () {
 
   Entity :: struct {
     id: i32,
-    components: [Component],
+    components: <Component>,
   }
 
   Entities :: table Entity;
-  insert Entities {id: 0, components: [Position {x: 0, y: 0}]}
+  insert Entities {id: 0, components: <Position {x: 0, y: 0}>}
 
-  // TODO improve query and better control over components layout
-  positions: [Position] : select Entities |components.Position|;
+  // Retrieve the `Position` component of every entity, only if present.
+  positions: [Position] : select Entities |components<Position>| {components: <Position>};
   for position: positions -> print(position);
 }
