@@ -35,6 +35,21 @@ layout :: () {
   for .score: result -> merge += score;
 }
 
+map :: () {
+  Entry :: struct {key: string, value: i32}
+  Map :: table Entry {
+    // Table metadata
+    unique key,
+  }
+  // Insertion of a new entry.
+  insert Map {key: "John", value: 10}
+  // Retrieve the player "John"
+  // TODO: how to retrieve a single element?
+  select_result: [Entry] : select Map {key: "John"}
+  // Delete the player "John"
+  delete Map {key: "John"}
+}
+
 ecs :: () {
   Component :: union {
     Position :: struct {x: i32, y: i32},
