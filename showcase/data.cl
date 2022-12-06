@@ -18,6 +18,8 @@
   numbers: [i32] : [1, 2, 3, 4, 5];
   // Array expression type can be explicit by prefixing the brackets with the type.
   numbers_2 :: i32[1, 2, 3, 4, 5];
+  // Implicit type deduction is also possible.
+  numbers_3 :: [1, 2, 3, 4, 5];
 
   element :: numbers[0];
   numbers[0] = element + 1;
@@ -97,6 +99,8 @@
   set: <Component> : <Position {x: 1, y: 2}, Velocity {x: 3, y: 4}>;
   // Explicit expression type
   set_2 :: Component<Position {x: 1, y: 2}, Velocity {x: 3, y: 4}>;
+  // Implicit type
+  set_3 :: <Position {x: 1, y: 2}, Velocity {x: 3, y: 4}>;
   // Iteration
   for component: set -> print(component);
   // Retrieve individual elements
