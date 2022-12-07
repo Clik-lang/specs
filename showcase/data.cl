@@ -32,6 +32,12 @@
   }
   alias :: Alias {point: {x: 1, y: 2}};
   assert alias.x == 1 && alias.y == 2;
+
+  // Remove the `point` field.
+  AliasDirect :: struct {
+    using Point,
+  }
+  alias_direct :: Alias {x: 1, y: 2};
 }
 
 ////////////
@@ -156,7 +162,6 @@
     Position :: struct {x: i32, y: i32},
     Velocity :: struct {x: i32, y: i32},
   }
-
   set: <Component> : <Position {x: 1, y: 2}, Velocity {x: 3, y: 4}>;
   // Explicit expression type
   set_2 :: Component<Position {x: 1, y: 2}, Velocity {x: 3, y: 4}>;
@@ -243,4 +248,13 @@
   weapon :: select_first player.inventory where .slot == WEAPON;
   slot :: weapon.slot;
   rarity :: weapon.rarity;
+}
+// Table constraints
+{
+  IdTable :: table {
+    id: i32: unique
+  } where .id > 0;
+  collection :: IdTable {};
+  insert collection {x: 1};
+  //insert collection {x: 0}; -> Panic
 }

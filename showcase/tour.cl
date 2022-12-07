@@ -31,6 +31,11 @@
 
   // Function can take other function pointers as parameters
   callback :: (fn: (i32, i32) i32) i32 -> fn(1, 2);
+
+  // `where` clause can be used to define constraints on type parameters
+  constraints :: (a: i32) i32 where .a > 0 {
+    return a
+  }
 }
 
 {
