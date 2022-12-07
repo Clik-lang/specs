@@ -257,4 +257,14 @@
   collection :: IdTable {};
   insert collection {x: 1};
   //insert collection {x: 0}; -> Panic
+
+  // Default value
+  IdTableDefault :: table {
+    id: i32: unique,
+    name: string: default "John",
+  } where .id > 0;
+  collection_default :: IdTableDefault {};
+  insert collection_default {id: 1};
+  result :: select_first collection_default where .id == 1;
+  assert result.name == "John";
 }
