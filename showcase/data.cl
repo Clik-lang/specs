@@ -141,3 +141,39 @@
 
   set<Position> = {x: 1, y: 2};
 }
+
+////////////
+// Tables //
+////////////
+// Tables are used to store a collection of types, and allow for queries.
+{
+  Entry :: struct {
+    name: string,
+    age: i32,
+  }
+  // Initialization
+  // Syntax: `table {<name> [:: <type>], ...}`
+  // TODO table meta (uniqueness, triggers, constraints, etc.)
+  collection :: table Entry;
+
+  // Insertion
+  // Syntax: `insert <table> <element>`
+  insert collection {name: "John", age: 20};
+
+  // Query
+  // Syntax: `select <table> [<layout>] [where <name> <predicate>, ...]`
+  result: [Entry] : select collection where .age > 18;
+  //result: [i32] : select collection |age| where .age > 18 {age};
+  //result :: select collection {age: >18};
+
+  // Delete
+  // Syntax: `delete <table> [<layout>] [where <name> <predicate>, ...]`
+  delete collection where .age > 18;
+
+  // Open tables
+  TableOpen :: open table;
+  extend TableOpen {
+    name: string,
+    age: i32,
+  }
+}
