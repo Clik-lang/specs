@@ -195,8 +195,7 @@
   Slot :: enum {
     WEAPON, SHIELD,
     HELMET, CHEST,
-    LEGS, BOOTS,
-    RING, AMULET
+    LEGS, BOOTS
   }
   Inventory :: table {
     slot: Slot,
@@ -215,4 +214,9 @@
       {SHIELD, 1},
     }
   }
+
+  // Anonymous type `Inventory{}`
+  weapon :: select_first player.inventory where .slot == WEAPON;
+  slot :: weapon.slot;
+  rarity :: weapon.rarity;
 }
