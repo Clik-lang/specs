@@ -181,7 +181,7 @@
   EntryTable2 :: table {name: string, age: i32};
 
   // Initialization
-  // Syntax: `<type> {[<name> [:: <expression>], ...]}`
+  // Syntax: `<type> {[<name> [: <expression>], ...]}`
   collection :: EntryTable {};
   //collection :: EntryTable {{name: "John", age: 20}};
 
