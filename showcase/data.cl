@@ -10,9 +10,6 @@
     x: i32,
     y: i32,
   }
-  Point_2 :: struct {
-    coord: struct {x: i32, y: i32}
-  }
 }
 
 // ARAYS
@@ -38,11 +35,19 @@
     East,
     West
   }
+  Point :: struct {x: i32, y: i32}
   // They can also hold immutable data.
   // Syntax: `enum [<type>] {<name> [:: <expression>], ...}`
+  // Constant type
   Component :: enum Point {
     Position :: {x: 1, y: 2},
     Velocity :: {x: 3, y: 4},
+  }
+  for point: Component -> print(point);
+  // Dynamic type
+  Component2 :: enum {
+    Position :: Point {x: 1, y: 2},
+    Velocity :: Point {x: 3, y: 4},
   }
   // Open enums are similar to enums, but they can be extended externally.
   // Syntax: `open enum [<type>];`
@@ -68,6 +73,14 @@
   extend ComponentOpen {
     Position :: struct {x: i32, y: i32},
     Velocity :: struct {x: i32, y: i32},
+  }
+
+  value: Component : Position {x: 1, y: 2};
+  // Find type
+  if value.Position -> print("Position: ", value);
+  match value {
+    .Position -> print("Position: ", value);
+    else -> print("Unknown");
   }
 }
 
