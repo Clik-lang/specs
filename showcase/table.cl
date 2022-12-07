@@ -3,7 +3,8 @@ Player :: struct {
     score: i32,
 }
 
-basics :: () {
+// Basics
+{
   // Table declaration. In this case storing a `Player` struct.
   players :: table Player;
   // Insertion of a new entry.
@@ -25,7 +26,8 @@ basics :: () {
   delete_result: [Player] : delete players {name: "John"}
 }
 
-layout :: () {
+// Layout example
+{
   players :: table Player;
   insert players {name: "John", score: 10}
   // Retrieve an array of scores.
@@ -35,22 +37,24 @@ layout :: () {
   for .score: result -> merge += score;
 }
 
-map :: () {
+// Map example
+{
   Entry :: struct {key: string, value: i32}
-  Map :: table Entry {
+  map :: table Entry {
     // Table metadata
     unique key,
   }
   // Insertion of a new entry.
-  insert Map {key: "John", value: 10}
+  insert map {key: "John", value: 10}
   // Retrieve the player "John"
   // TODO: how to retrieve a single element?
-  select_result: [Entry] : select Map {key: "John"}
+  select_result: [Entry] : select map {key: "John"}
   // Delete the player "John"
-  delete Map {key: "John"}
+  delete map {key: "John"}
 }
 
-ecs :: () {
+// ECS example
+{
   Component :: union {
     Position :: struct {x: i32, y: i32},
     Velocity :: struct {x: i32, y: i32},
@@ -61,10 +65,10 @@ ecs :: () {
     components: <Component>,
   }
 
-  Entities :: table Entity;
-  insert Entities {id: 0, components: <Position {x: 0, y: 0}>}
+  entities :: table Entity;
+  insert entities {id: 0, components: <Position {x: 0, y: 0}>}
 
   // Retrieve the `Position` component of every entity, only if present.
-  positions: [Position] : select Entities |components<Position>| {components: <Position>};
+  positions: [Position] : select entities |components<Position>| {components: <Position>};
   for position: positions -> print(position);
 }
