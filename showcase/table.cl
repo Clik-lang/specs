@@ -3,7 +3,7 @@ Player :: struct {
     score: i32,
 }
 
-// Layout example
+// Layout
 {
   Players :: table Player;
 
@@ -16,7 +16,7 @@ Player :: struct {
   for .score: result -> merge += score;
 }
 
-// Map example
+// Map
 {
   Entry :: struct {key: string, value: i32}
   Map :: table {
@@ -33,7 +33,7 @@ Player :: struct {
   delete map {key: "John"}
 }
 
-// ECS example
+// ECS
 {
   Component :: union {
     Position :: struct {x: i32, y: i32},

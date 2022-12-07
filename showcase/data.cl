@@ -24,6 +24,14 @@
   point3: Point : {1, 2};
   point4 :: Point {x: 1, y: 2};
   point5 :: Point {1, 2};
+
+  // Equivalent to `Point`
+  // `using` is used to place the type in the current scope.
+  Alias :: struct {
+    using point: Point,
+  }
+  alias :: Alias {point: {x: 1, y: 2}};
+  assert alias.x == 1 && alias.y == 2;
 }
 
 ////////////
