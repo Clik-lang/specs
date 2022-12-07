@@ -16,6 +16,12 @@
     x: i32,
     y: i32,
   }
+
+  point: Point : Point {x: 1, y: 2};
+  point2: Point : {x: 1, y: 2};
+  point3: Point : {1, 2};
+  point4 :: Point {x: 1, y: 2};
+  point5 :: Point {1, 2};
 }
 
 ////////////
@@ -151,10 +157,17 @@
     name: string,
     age: i32,
   }
-  // Initialization
+  // Table type
+  // Syntax: `table <type>`
   // Syntax: `table {<name> [:: <type>], ...}`
   // TODO table meta (uniqueness, triggers, constraints, etc.)
-  collection :: table Entry;
+  EntryTable :: table Entry;
+  EntryTable2 :: table {name: string, age: i32};
+
+  // Initialization
+  // Syntax: `<type> {[<name> [:: <expression>], ...]}`
+  collection :: EntryTable {};
+  //collection :: EntryTable {{name: "John", age: 20}};
 
   // Insertion
   // Syntax: `insert <table> <element>`
@@ -175,5 +188,31 @@
   extend TableOpen {
     name: string,
     age: i32,
+  }
+}
+// Inner table
+{
+  Slot :: enum {
+    WEAPON, SHIELD,
+    HELMET, CHEST,
+    LEGS, BOOTS,
+    RING, AMULET
+  }
+  Inventory :: table {
+    slot: Slot,
+    rarity: i32,
+  }
+  Player :: struct {
+    name: string,
+    age: i32,
+    inventory: Inventory,
+  }
+  player :: Player {
+    name: "John",
+    age: 20,
+    inventory: {
+      {WEAPON, 1},
+      {SHIELD, 1},
+    }
   }
 }
