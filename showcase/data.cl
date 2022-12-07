@@ -1,10 +1,16 @@
-// Basics
+////////////
+// Basics //
+////////////
 // i8, u8, i16, u16, i32, u32, i64, u64, f32, f64, bool
 
-// Integrated
+////////////////
+// Integrated //
+////////////////
 // string
 
-// STRUCTURES
+////////////////
+// Structures //
+////////////////
 {
   Point :: struct {
     x: i32,
@@ -12,7 +18,9 @@
   }
 }
 
-// ARAYS
+////////////
+// Arrays //
+////////////
 // Arrays have the type `[<type]` and are initialized using `[<expression>, ...]`
 {
   numbers: [i32] : [1, 2, 3, 4, 5];
@@ -25,7 +33,9 @@
   numbers[0] = element + 1;
 }
 
-// ENUMS
+///////////
+// Enums //
+///////////
 // Enums are a special type of data structure that can be used to
 // represent a fixed set of values.
 {
@@ -60,7 +70,9 @@
   }
 }
 
-// UNIONS
+////////////
+// Unions //
+////////////
 // Unions are similar to enums, but each instance can hold different data.
 // Syntax: `union {<name> [:: <type>], ...}`
 {
@@ -85,7 +97,9 @@
 }
 
 
-// FLAGS
+///////////
+// Flags //
+///////////
 // Flags are true/false values that can be combined.
 {
   // Syntax: `flags {<name>, ...}`
@@ -103,7 +117,9 @@
   }
 }
 
-// SETS
+//////////
+// Sets //
+//////////
 // Sets are arrays that can only contain a single element of each type (support for `union` and `enum`)
 // The syntax is similar to arrays but using `<>` instead of square brackets.
 {
