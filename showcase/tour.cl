@@ -202,11 +202,26 @@ main :: () {
   // without needing third party libraries support.
   // The layout syntax is defined by rules surrounded by vertical bars `|<rules>|`.
   // Layouts are reflected in the type: `[<type>]` becomes `[<type>{<component_1>, <component_2>, ...}]`.
+
+  // |x| -> retrieve the `x` component
+  // |y| -> retrieve the `y` component
+  // |(x, y)| -> AoS layout with `x` and `y` components
+  // |x.., y..| -> SoA layout with `x` and `y` components
+  // |(x+++, y+++)| -> AoSoA layout where components are grouped by 4
+  // |(x, y)~| -> AoS layout with each element aligned to the cache line size
+  // |(x+++, y+++)~| -> AoSoA layout cache line aligned
+
   points: [Point] : Point[{ x: 1, y: 2 }, { x: 3, y: 4 }];
   points_xy: [Point{x, y}] : |(x, y)| points; // Essentially the same, but more strictly typed
   points_x: [Point{x}] : |x| points_xy; // Remove the `y` component
   for .x: points_x -> print(x); // Prints 1, 3
   // for .y: points_x <- compile error, `y` is not defined
+
+  // Although arrays with custom layout can be used as normal, the backed memory does reflect the change.
+  // Get a pointer pointing to a continuous block of Point's `x` components [1, 2]
+  pointer : ptr : points_x.as_ptr(); // Get a pointer to the array
+  assert pointer.load<i32>(0) == 1;
+  assert pointer.load<i32>(1) == 2;
 }
 
 ///////////////
@@ -222,63 +237,4 @@ main :: () {
   is_constant: bool : #is_constant(5); // Check if an expression is a compile-time constant
   is_escaping: bool : #is_escaping(number); // Check if an expression is escaping, can be used to decide between stack and heap allocation
   // #panic("Error message"); // Panic with an error message
-}
-
-//////////////////////////
-// 7. Class declaration //
-//////////////////////////
-
-// Classes are containers combining a structure & local functions.
-// They intentionally cannot access any outer scope and are entirely independent.
-// There is a clear distinction between a class API and its implementation, allowing specializers to choose the most appropriate one without side-effect.
-class Object {
-  // Factory function
-  // Must return a new instance of the class
-  ::new();
-  // Local functions
-  get() i32;
-  set(value: i32);
-
-  // Operator overloading
-  // Must return a new instance of the class, and the parameter be of the same type
-  operator+();
-
-  // Inline implementation, used by default
-  impl {
-    // Class structure
-    struct {
-      value: i32,
-    }
-
-    // Function implementations have implicit parameters/return type as defined in the class
-
-    ::new {
-      self.value = 1;
-    }
-
-    set {
-      self.value = value;
-    }
-
-    get {
-      return self.value;
-    }
-
-    operator+ {
-      // TODO how should be named the right-side value?
-      return Object { value: self.value + object.value };
-    }
-
-    defer {
-      // Called whenever the class goes out of scope
-    }
-  }
-}
-
-main_class :: () {
-  // Class instantiation
-  object :: Object::new();
-  assert object.get() == 1;
-  object.set(2);
-  assert object.get() == 2;
 }
