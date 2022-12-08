@@ -7,13 +7,9 @@
 ////////////////
 // Integrated //
 ////////////////
-
-// string
 {
   str: string : "Hello, World!";
-}
-// type
-{
+  cstr: cstring : c"Hello, World!"; // Zero-terminated string.
   number: type : i32;
 }
 
