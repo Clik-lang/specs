@@ -211,13 +211,6 @@
   // Delete
   // Syntax: `delete <table> [<layout>] [where <name> <predicate>, ...]`
   delete collection where .age > 18;
-
-  // Open tables
-  TableOpen :: open table;
-  extend TableOpen {
-    name: string,
-    age: i32,
-  }
 }
 // Inner table
 {
@@ -267,4 +260,20 @@
   insert collection_default {id: 1};
   result :: select_first collection_default where .id == 1;
   assert result.name == "John";
+}
+// Open table
+{
+  TableOpen :: open table;
+  extend TableOpen {
+    name: string,
+    age: i32,
+  }
+  collection :: TableOpen {};
+  insert collection {name: "John", age: 20};
+
+  extend TableOpen {
+    height: i32, // No default value, zero-initialized
+  }
+  result :: select_first collection where .name == "John";
+  assert result.height == 0; // Zero-initialized
 }
