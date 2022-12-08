@@ -9,6 +9,13 @@
 ////////////////
 
 // string
+{
+  str: string : "Hello, World!";
+}
+// type
+{
+  number: type : i32;
+}
 
 ////////////////
 // Structures //
@@ -38,6 +45,28 @@
     using Point,
   }
   alias_direct :: Alias {x: 1, y: 2};
+}
+//////////////
+// Generics //
+//////////////
+{
+  Point :: struct (N: type) {x: N, y: N}
+  increment :: (coord: $T/Point, value: T.N) -> Point (T.N) ->
+    {coord.x + value, coord.y + value}
+  increment_2 :: (coord: Point($N), value: N) -> Point (N) ->
+    {coord.x + value, coord.y + value}
+
+  point := Point (i32) {x: 1, y: 2};
+  point = increment(point, 1);
+  point = increment_2(point, 1);
+
+  Player :: struct {
+    coordinates: Point (i32),
+  }
+  player :: Player {
+    coordinates: Point (i32) {x: 1, y: 2},
+  }
+  player2 :: Player {{x: 1, y: 2}}
 }
 
 ////////////
