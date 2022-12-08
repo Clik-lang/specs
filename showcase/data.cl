@@ -178,6 +178,12 @@
     B,
     C,
   }
+
+  set: Flags : A | B;
+  if set.A -> print("A");
+  if set.B -> print("B");
+  if set.C -> print("Invalid");
+
   // Open flags
   FlagsOpen :: open flags;
   extend FlagsOpen {
