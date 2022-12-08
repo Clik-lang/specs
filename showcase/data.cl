@@ -113,6 +113,13 @@
     Position :: struct {x: i32, y: i32},
     Velocity :: struct {x: i32, y: i32},
   }
+
+  Point :: struct {x: i32, y: i32}
+  // Constant type
+  Component2 :: union Point {
+    Position, Velocity,
+  }
+
   // Open unions
   ComponentOpen :: open union;
   extend ComponentOpen {
