@@ -1,8 +1,8 @@
 
 {
-  /////////////////////////////
-  // 1. Function declaration //
-  /////////////////////////////
+  //////////////////////////
+  // Function declaration //
+  //////////////////////////
 
   // Function taking two `i32` parameters and returning another `i32`.
   add_1 :: (a: i32, b: i32) i32 {
@@ -39,18 +39,38 @@
 }
 
 {
-  /////////////////////////////
-  // 2. Variable declaration //
-  /////////////////////////////
+  //////////////////////////
+  // Variable declaration //
+  //////////////////////////
 
   // `::` defines a constant with implicit type
   const_num :: 5;
   const_num_typed: i32 : 5; // Typed version
 
+  // Function requiring a constant parameter
+  constant_function :: (constant::i32) i32 -> constant;
+
   // `:=` is the mutable version
   num := 5;
   num = 6;
   num_typed: i32 = 5; // Typed version
+}
+
+///////////////
+// Ownership //
+///////////////
+{
+  Point :: struct {x:i32, y:i32}
+  point :: Point {1, 2};
+  // Borrowing a reference to a struct
+  function :: (p: &Point) -> i32 {
+    p.x + p.y
+  }
+
+  value :: function(&point);
+
+  point2 :: point;
+  // point.x = 3; // Error: cannot assign to immutable field
 }
 
 // Main function
@@ -73,6 +93,12 @@ main :: () {
     Point :: struct {
       x: i32,
       y: i32
+    }
+
+    // Fields are guaranteed to be constant
+    PointConstant :: struct {
+      x:: i32,
+      y:: i32
     }
 
     point :: Point { x: 1, y: 2 };
@@ -117,9 +143,9 @@ main :: () {
     defer println("Deferred");
   } // End of the scope, should print
 
-  /////////////////////
-  // 3. Control flow //
-  /////////////////////
+  //////////////////
+  // Control flow //
+  //////////////////
   {
     number :: 5;
     // Syntax: `if <condition> <block> [else <statement>]`
@@ -183,9 +209,9 @@ main :: () {
     }
   }
 
-  /////////////////////////////////
-  // 4. Raw address manipulation //
-  /////////////////////////////////
+  //////////////////////////////
+  // Raw address manipulation //
+  //////////////////////////////
 
   // Data can be extracted from raw addresses using the `ptr` type
   // The `alloca` intrinsic is used to allocate memory on the stack
@@ -198,9 +224,9 @@ main :: () {
     second :: address.load<f32>(1); // Any type can be loaded, as long as it fits the size of the address
   }
 
-  //////////////////////
-  // 5. Memory layout //
-  //////////////////////
+  ///////////////////
+  // Memory layout //
+  ///////////////////
 
   // Layout can be defined for array expressions in order to precise how elements should be laid out in memory
   // This can for example be used to declare an array as SOA (Structure of Arrays) instead of AOS (Array of Structures)
@@ -229,9 +255,9 @@ main :: () {
   assert pointer.load<i32>(1) == 2;
 }
 
-///////////////
-// 6. Macros //
-///////////////
+////////////
+// Macros //
+////////////
 
 // Macros are explicit compiler intrinsics increasing the language flexibility
 {
