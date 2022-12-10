@@ -146,6 +146,8 @@
 {
   // Syntax: `[<length>]<type>{<expression>, ...}`
   array :: [5]i32{1, 2, 3, 4, 5};
+  // Implicit length
+  array :: []i32{1, 2, 3, 4, 5};
   // Implicit type
   array_2 :: {1, 2, 3, 4, 5};
 

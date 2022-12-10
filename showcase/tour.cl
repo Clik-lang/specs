@@ -103,9 +103,9 @@ main :: () {
     assert array[0] == 1;
     assert array[1] == 2;
 
-    struct_array: [Point] : Point[{.x: 1, .y: 2}, {.x: 3, .y: 4}];
+    struct_array: []Point : {{.x: 1, .y: 2}, {.x: 3, .y: 4}};
     // Equivalent to:
-    struct_array_2: [Point] : [Point {.x: 1, .y: 2}, Point {.x: 3, .y: 4}];
+    struct_array_2: []Point : {Point {.x: 1, .y: 2}, Point {.x: 3, .y: 4}};
 
     Tuple :: struct {
       coord: (x: i32, y: i32),
@@ -175,7 +175,7 @@ main :: () {
     }
 
     // Looping
-    points :: Point[{ x: 1, y: 2 }, { x: 3, y: 4 }];
+    points :: []Point{{ x: 1, y: 2 }, { x: 3, y: 4 }};
     // Iterate over a struct array
     for point: points -> print(point.x);
     // Iterate over a struct's components
@@ -235,9 +235,9 @@ main :: () {
   // |(x, y)~| -> AoS layout with each element aligned to the cache line size
   // |(x+++, y+++)~| -> AoSoA layout cache line aligned
 
-  points: [Point] : Point[{.x: 1, .y: 2}, {.x: 3, .y: 4}];
-  points_xy: [Point{x, y}] : |(x, y)| points; // Essentially the same, but more strictly typed
-  points_x: [Point{x}] : |x| points_xy; // Remove the `y` component
+  points: []Point : {{.x: 1, .y: 2}, {.x: 3, .y: 4}};
+  points_xy: []Point{x, y} : |(x, y)| points; // Essentially the same, but more strictly typed
+  points_x: []Point{x} : |x| points_xy; // Remove the `y` component
   for .x: points_x -> print(x); // Prints 1, 3
   // for .y: points_x <- compile error, `y` is not defined
 

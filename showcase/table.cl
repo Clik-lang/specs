@@ -10,7 +10,7 @@ Player :: struct {
   players :: Players {};
   insert players {"John", 10}
   // Retrieve an array of scores.
-  result: [Player{score}] : select players |score|;
+  result: []Player{score} : select players |score|;
   // Merge the scores
   merge: i32 = 0;
   for .score: result -> merge += score;
@@ -28,7 +28,7 @@ Player :: struct {
   insert map {"John", 10}
   // Retrieve the player "John"
   // TODO: how to retrieve a single element?
-  select_result: [Entry] : select map where .key "John";
+  select_result: []Entry : select map where .key "John";
   // Delete the player "John"
   delete map {key: "John"}
 }
@@ -41,7 +41,7 @@ Player :: struct {
   }
   Entity :: struct {
     id: i32,
-    components: set[Component],
+    components: set[]Component,
   }
   Entities :: table Entity;
 
@@ -49,6 +49,6 @@ Player :: struct {
   insert entities {0, [Position {0, 0}]}
 
   // Retrieve the `Position` component of every entity, only if present.
-  positions: [Position] : select entities |components[Position]| where .components [Position];
+  positions: []Position : select entities |components[Position]| where .components [Position];
   for position: positions -> print(position);
 }
