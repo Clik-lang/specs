@@ -42,16 +42,6 @@
   }
   alias_direct :: Alias {.x: 1, .y: 2};
 }
-// Wither
-{
-  // On structure
-  Point :: struct {x: i32, y: i32}
-  point := Point {.x: 1, .y: 2};
-  point = point with {.x: 3};
-  // On array
-  array := [1, 2, 3];
-  array = array with {.0: 4};
-}
 //////////////
 // Generics //
 //////////////
@@ -73,30 +63,6 @@
     coordinates: Point (i32) {.x: 1, .y: 2},
   }
   player2 :: Player {{.x: 1, .y: 2}}
-}
-
-////////////
-// Arrays //
-////////////
-
-// Arrays have the type `[<type]` and are initialized using `[<expression>, ...]`
-{
-  // Expressions syntax: `[<layout>] [<type>][<expression>, ...]`
-
-  numbers: [i32] : [1, 2, 3, 4, 5];
-  // Array expression type can be explicit by prefixing the brackets with the type.
-  numbers_2 :: i32[1, 2, 3, 4, 5];
-  // Implicit type deduction is also possible.
-  numbers_3 :: [1, 2, 3, 4, 5];
-
-  element :: numbers[0];
-  numbers[0] = element + 1;
-
-  length :: numbers.length;
-
-  Point :: struct {x: i32, y: i32}
-  // We are only interested in the `x` field.
-  points_x: [Point{x}] : |x| [{.x: 1, .y: 2}, {.x: 3, .y: 4}];
 }
 
 ///////////
@@ -171,57 +137,86 @@
   }
 }
 
+////////////
+// Arrays //
+////////////
 
-///////////
-// Flags //
-///////////
-
-// Flags are true/false values that can be combined.
+// Arrays have the type `[<type]` and are initialized using `[<expression>, ...]`
+// They only exist on the stack and are not heap allocated.
 {
-  // Syntax: `flags {<name>, ...}`
-  Flags :: flags {
-    A,
-    B,
-    C,
-  }
+  // Expressions syntax: `[<layout>] [<type>][<expression>, ...]`
 
-  set: Flags : A | B;
-  if set.A -> print("A");
-  if set.B -> print("B");
-  if set.C -> print("Invalid");
+  numbers: [i32] : [1, 2, 3, 4, 5];
+  // Array expression type can be explicit by prefixing the brackets with the type.
+  numbers_2 :: i32[1, 2, 3, 4, 5];
+  // Implicit type deduction is also possible.
+  numbers_3 :: [1, 2, 3, 4, 5];
 
-  // Open flags
-  FlagsOpen :: open flags;
-  extend FlagsOpen {
-    A,
-    B,
-    C,
-  }
+  element :: numbers[0];
+  length :: numbers.length;
+
+  Point :: struct {x: i32, y: i32}
+  // We are only interested in the `x` field.
+  points_x: [Point{x}] : |x| [{.x: 1, .y: 2}, {.x: 3, .y: 4}];
 }
 
 //////////
 // Sets //
 //////////
 
-// Sets are arrays that can only contain a single element of each type (support for `union` and `enum`)
-// The syntax is similar to arrays but using `<>` instead of square brackets.
+// Sets are arrays that can only contain unique elements.
+// For unions and enums, the elements are compared by their discriminant.
+// They only exist on the stack and are not heap allocated.
 {
+  // Primitive & structure sets
+  set :: set[i32] {1, 2, 3, 4, 5};
+  result: bool : set[0];
+  for number: set -> print(number);
+
+  // Union sets
   Component :: union {
     Position :: struct {x: i32, y: i32},
     Velocity :: struct {x: i32, y: i32},
   }
-  set: <Component> : <Position {.x: 1, .y: 2}, Velocity {.x: 3, .y: 4}>;
-  // Explicit expression type
-  set_2 :: Component<Position {.x: 1, .y: 2}, Velocity {.x: 3, .y: 4}>;
-  // Implicit type
-  set_3 :: <Position {.x: 1, .y: 2}, Velocity {.x: 3, .y: 4}>;
-  // Iteration
-  for component: set -> print(component);
-  // Retrieve individual elements
-  position :: set<Position>;
-  velocity :: set<Velocity>;
+  union_set: set[Component] {Position {.x: 1, .y: 2}, Velocity {.x: 3, .y: 4}};
+  for component: union_set -> print(component);
+  // TODO: nullable
+  position: Position : union_set[Position];
+  velocity: Velocity : union_set[Velocity];
+}
 
-  set<Position> = {.x: 1, .y: 2};
+//////////
+// Maps //
+//////////
+
+// Maps allow to store key-value pairs.
+// They only exist on the stack and are not heap allocated.
+{
+  map :: map[string]i32 {"John": 10, "Jane": 20};
+  result :: map["John"];
+}
+
+/////////////
+// Withers //
+/////////////
+
+// The `with` syntax is used to mutate stack structures.
+{
+  // On structure
+  Point :: struct {x: i32, y: i32}
+  point := Point {.x: 1, .y: 2};
+  point = point with {.x: 3};
+  // On array
+  array := [1, 2, 3];
+  array = array with {.0: 4};
+  // On set
+  set := set[i32] {1, 2, 3};
+  set = set with {4};
+  // TODO without?
+  // On map
+  map := map[string]i32 {"John": 10, "Jane": 20};
+  map = map with {"John": 30};
+  // TODO without?
 }
 
 ////////////
