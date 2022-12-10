@@ -42,6 +42,16 @@
   }
   alias_direct :: Alias {.x: 1, .y: 2};
 }
+// Wither
+{
+  // On structure
+  Point :: struct {x: i32, y: i32}
+  point := Point {.x: 1, .y: 2};
+  point = point with {.x: 3};
+  // On array
+  array := [1, 2, 3];
+  array = array with {.0: 4};
+}
 //////////////
 // Generics //
 //////////////
