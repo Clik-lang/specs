@@ -22,10 +22,10 @@
     y: i32,
   }
 
-  point: Point : Point {x: 1, y: 2};
-  point2: Point : {x: 1, y: 2};
+  point: Point : Point {.x: 1, .y: 2};
+  point2: Point : {.x: 1, .y: 2};
   point3: Point : {1, 2};
-  point4 :: Point {x: 1, y: 2};
+  point4 :: Point {.x: 1, .y: 2};
   point5 :: Point {1, 2};
 
   // Equivalent to `Point`
@@ -33,14 +33,14 @@
   Alias :: struct {
     using point: Point,
   }
-  alias :: Alias {point: {x: 1, y: 2}};
+  alias :: Alias {point: {.x: 1, .y: 2}};
   assert alias.x == 1 && alias.y == 2;
 
   // Remove the `point` field.
   AliasDirect :: struct {
     using Point,
   }
-  alias_direct :: Alias {x: 1, y: 2};
+  alias_direct :: Alias {.x: 1, .y: 2};
 }
 //////////////
 // Generics //
@@ -52,7 +52,7 @@
   increment_2 :: (coord: Point($N), value: N) -> Point (N) ->
     {coord.x + value, coord.y + value}
 
-  point := Point (i32) {x: 1, y: 2};
+  point := Point (i32) {.x: 1, .y: 2};
   point = increment(point, 1);
   point = increment_2(point, 1);
 
@@ -60,9 +60,9 @@
     coordinates: Point (i32),
   }
   player :: Player {
-    coordinates: Point (i32) {x: 1, y: 2},
+    coordinates: Point (i32) {.x: 1, .y: 2},
   }
-  player2 :: Player {{x: 1, y: 2}}
+  player2 :: Player {{.x: 1, .y: 2}}
 }
 
 ////////////
@@ -86,7 +86,7 @@
 
   Point :: struct {x: i32, y: i32}
   // We are only interested in the `x` field.
-  points_x: [Point{x}] : |x| [{x: 1, y: 2}, {x: 3, y: 4}];
+  points_x: [Point{x}] : |x| [{.x: 1, .y: 2}, {.x: 3, .y: 4}];
 }
 
 ///////////
@@ -107,14 +107,14 @@
   // Syntax: `enum [<type>] {<name> [:: <expression>], ...}`
   // Constant type
   Component :: enum Point {
-    Position :: {x: 1, y: 2},
-    Velocity :: {x: 3, y: 4},
+    Position :: {.x: 1, .y: 2},
+    Velocity :: {.x: 3, .y: 4},
   }
   for point: Component -> print(point);
   // Dynamic type
   Component2 :: enum {
-    Position :: Point {x: 1, y: 2},
-    Velocity :: Point {x: 3, y: 4},
+    Position :: Point {.x: 1, .y: 2},
+    Velocity :: Point {.x: 3, .y: 4},
   }
   // Open enums are similar to enums, but they can be extended externally.
   // Syntax: `open enum [<type>];`
@@ -122,8 +122,8 @@
   // Type extensions are used to extend open types.
   // Syntax: `extend <type> {<name> [:: <expression>], ...}`
   extend ComponentOpen {
-    Position :: {x: 1, y: 2},
-    Velocity :: {x: 3, y: 4},
+    Position :: {.x: 1, .y: 2},
+    Velocity :: {.x: 3, .y: 4},
   }
 }
 
@@ -152,7 +152,7 @@
     Velocity :: struct {x: i32, y: i32},
   }
 
-  value: Component : Position {x: 1, y: 2};
+  value: Component : Position {.x: 1, .y: 2};
   // Find type
   if value.Position -> print("Position: ", value);
   match value {
@@ -200,18 +200,18 @@
     Position :: struct {x: i32, y: i32},
     Velocity :: struct {x: i32, y: i32},
   }
-  set: <Component> : <Position {x: 1, y: 2}, Velocity {x: 3, y: 4}>;
+  set: <Component> : <Position {.x: 1, .y: 2}, Velocity {.x: 3, .y: 4}>;
   // Explicit expression type
-  set_2 :: Component<Position {x: 1, y: 2}, Velocity {x: 3, y: 4}>;
+  set_2 :: Component<Position {.x: 1, .y: 2}, Velocity {.x: 3, .y: 4}>;
   // Implicit type
-  set_3 :: <Position {x: 1, y: 2}, Velocity {x: 3, y: 4}>;
+  set_3 :: <Position {.x: 1, .y: 2}, Velocity {.x: 3, .y: 4}>;
   // Iteration
   for component: set -> print(component);
   // Retrieve individual elements
   position :: set<Position>;
   velocity :: set<Velocity>;
 
-  set<Position> = {x: 1, y: 2};
+  set<Position> = {.x: 1, .y: 2};
 }
 
 ////////////
@@ -234,11 +234,11 @@
   // Initialization
   // Syntax: `<type> {[<name> [: <expression>], ...]}`
   collection :: EntryTable {};
-  //collection :: EntryTable {{name: "John", age: 20}};
+  //collection :: EntryTable {{.name: "John", .age: 20}};
 
   // Insertion
   // Syntax: `insert <table> <element>`
-  insert collection {name: "John", age: 20};
+  insert collection {.name: "John", .age: 20};
 
   // Query
   // Syntax: `select <table> [<layout>] [where <name> <predicate>, ...]`
@@ -267,9 +267,9 @@
     inventory: Inventory,
   }
   player :: Player {
-    name: "John",
-    age: 20,
-    inventory: {
+    .name: "John",
+    .age: 20,
+    .inventory: {
       {WEAPON, 1},
       {SHIELD, 1},
     }
@@ -286,8 +286,8 @@
     id: i32: unique
   } where .id > 0;
   collection :: IdTable {};
-  insert collection {x: 1};
-  //insert collection {x: 0}; -> Panic
+  insert collection {.x: 1};
+  //insert collection {.x: 0}; -> Panic
 
   // Default value
   IdTableDefault :: table {
@@ -295,7 +295,7 @@
     name: string: default "John",
   } where .id > 0;
   collection_default :: IdTableDefault {};
-  insert collection_default {id: 1};
+  insert collection_default {.id: 1};
   result :: select_first collection_default where .id == 1;
   assert result.name == "John";
 }
@@ -307,7 +307,7 @@
     age: i32,
   }
   collection :: TableOpen {};
-  insert collection {name: "John", age: 20};
+  insert collection {.name: "John", .age: 20};
 
   extend TableOpen {
     height: i32, // No default value, zero-initialized

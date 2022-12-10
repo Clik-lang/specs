@@ -8,7 +8,7 @@ Player :: struct {
   Players :: table Player;
 
   players :: Players {};
-  insert players {name: "John", score: 10}
+  insert players {.name: "John", .score: 10}
   // Retrieve an array of scores.
   result: [Player{score}] : select players |score|;
   // Merge the scores
@@ -25,7 +25,7 @@ Player :: struct {
 
   map :: Map {};
   // Insertion of a new entry.
-  insert map {key: "John", value: 10}
+  insert map {.key: "John", .value: 10}
   // Retrieve the player "John"
   // TODO: how to retrieve a single element?
   select_result: [Entry] : select map where .key "John";
@@ -46,7 +46,7 @@ Player :: struct {
   Entities :: table Entity;
 
   entities :: Entities {};
-  insert entities {id: 0, components: <Position {x: 0, y: 0}>}
+  insert entities {.id: 0, .components: <Position {x: 0, y: 0}>}
 
   // Retrieve the `Position` component of every entity, only if present.
   positions: [Position] : select entities |components<Position>| where .components <Position>;
