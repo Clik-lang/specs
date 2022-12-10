@@ -144,16 +144,13 @@
 // Arrays have the type `[<type]` and are initialized using `[<expression>, ...]`
 // They only exist on the stack and are not heap allocated.
 {
-  // Expressions syntax: `[<layout>] [<type>][<expression>, ...]`
+  // Syntax: `[<length>]<type>{<expression>, ...}`
+  array :: [5]i32{1, 2, 3, 4, 5};
+  // Implicit type
+  array_2 :: {1, 2, 3, 4, 5};
 
-  numbers: [i32] : [1, 2, 3, 4, 5];
-  // Array expression type can be explicit by prefixing the brackets with the type.
-  numbers_2 :: i32[1, 2, 3, 4, 5];
-  // Implicit type deduction is also possible.
-  numbers_3 :: [1, 2, 3, 4, 5];
-
-  element :: numbers[0];
-  length :: numbers.length;
+  element :: array[0];
+  length :: array.length;
 
   Point :: struct {x: i32, y: i32}
   // We are only interested in the `x` field.
@@ -168,8 +165,12 @@
 // For unions and enums, the elements are compared by their discriminant.
 // They only exist on the stack and are not heap allocated.
 {
+  // Syntax: `set[<type>]{<expression>, ...}`
+
   // Primitive & structure sets
-  set :: set[i32] {1, 2, 3, 4, 5};
+  set :: set[5]i32{1, 2, 3, 4, 5};
+  // Implicit type
+  set_2 :: set{1, 2, 3, 4, 5};
   result: bool : set[0];
   for number: set -> print(number);
 
