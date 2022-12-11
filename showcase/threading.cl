@@ -30,7 +30,7 @@ nested_tasks :: () {
         // `counter` is copied into the task, taking a snapshot of its value before entering the task
         // So in this case, the value of `counter` is 1
         counter += 1; // `counter` becomes 2
-      }
+      } // `counter` exits the task, the value is merged back into the main thread
     }
     // Each task has incremented `counter` by 1, the current thread will merge the changes.
     // The merging phase allows tasks to be executed in parallel without worrying about data race.
