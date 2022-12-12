@@ -1,13 +1,5 @@
 Point :: struct {x: i32, y: i32}
 
-// Create a background task by declaring it in the global scope
-task {
-  // Do something in the background
-  // Start on program launch
-
-  // TODO: how to stop it from preventing the program from exiting?
-}
-
 shared_variable :: () {
   // Shared variable declared with `~`
   counter :~ 0;
@@ -48,5 +40,26 @@ conditional_task :: () {
       // Do something with the value
     }
     value = 1;
+  }
+}
+
+// TODO: how to handle global variables?
+// Everything below is POC
+global :~ 0;
+// Create a background task by declaring it in the global scope
+task {
+  for {
+    // Run when `global` == 1
+    select {
+      where global == 1 {
+        // Do something
+      },
+      // Timeout after 1 second
+      timeout 1000 {
+        // Do something else
+      },
+    }
+    where
+    break;
   }
 }
