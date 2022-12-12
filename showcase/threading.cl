@@ -29,13 +29,21 @@ counting_fork :: () {
   assert counter == 11;
 }
 
-local_fork :: (){
-  counter :~ 0;
-  // the `local` directive can be used to force the fork to run in the current thread
-  // potentially taking advantage of ILP
-  #local fork 0..10 {
-    counter += 1;
+async_fork :: () {
+  // `async` directive makes the fork run in the background
+  // without blocking the current thread
+  #async fork i: 0..10 {
+    print("Hello: ", i);
   }
+
+  // Async forks cannot access shared variables
+  shared :~ 0;
+  #async fork 0..1 {
+    // shared = 1; // Error: variable is not mutable
+  }
+
+  // TODO how to capture variables from the parent scope?
+  // e.g. to retrieve a table
 }
 
 // Create a background task by declaring it in the global scope
@@ -50,11 +58,14 @@ fork where started true || #timeout 1000 {
 // Web server //
 ////////////////
 {
-  // The `fork` before the function block is a shortcut for a block with a single `fork` statement
-  start_server :: () fork {
-    connection :: accept();
-    request :: read(connection);
-    write(connection, 5);
+  start_server :: () {
+    for {
+      connection :: accept();
+      #async fork {
+        request :: read(connection);
+        write(connection, 5);
+      }
+    }
   }
   accept :: () i32 -> 0;
   read :: (connection: i32) i32 -> 1;
