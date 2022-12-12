@@ -29,21 +29,25 @@ counting_fork :: () {
   assert counter == 11;
 }
 
-async_fork :: () {
-  // `async` directive makes the fork run in the background
-  // without blocking the current thread
-  #async fork i: 0..10 {
-    print("Hello: ", i);
-  }
+counting_spawn :: () {
+  // `spawn` creates a new task running in the background
+  // The task is not joined, so the main thread may not wait for it to finish
+  for i: 0..10 -> spawn -> print("Hello: ", i);
 
-  // Async forks cannot access shared variables
+  // Async tasks cannot access shared variables
   shared :~ 0;
-  #async fork 0..1 {
+  spawn {
     // shared = 1; // Error: variable is not mutable
   }
 
-  // TODO how to capture variables from the parent scope?
-  // e.g. to retrieve a table
+  // Variables can be captured using the ownership system
+  variable := 0;
+  variable = 1;
+  spawn { // TODO: maybe enforce capture syntax `[<name>, ...]`?
+    variable = 2;
+  }
+  // `variable` is moved into the task, so it cannot be accessed anymore
+  // variable = 2; // Error: variable is not accessible
 }
 
 // Create a background task by declaring it in the global scope
@@ -61,7 +65,7 @@ fork where started true || #timeout 1000 {
   start_server :: () {
     for {
       connection :: accept();
-      #async fork {
+      spawn {
         request :: read(connection);
         write(connection, 5);
       }
