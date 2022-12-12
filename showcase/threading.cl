@@ -29,25 +29,26 @@ nested_tasks :: () {
   assert counter == 11;
 }
 
-conditional_fork :: () {
-  // TODO
+// Create a background task by declaring it in the global scope
+// Iteration starts when `started` is set to true or when the timeout is reached
+started :~ false;
+fork started == true || #timeout 1000 {
+  break;
 }
 
-// TODO: how to handle global variables?
-// Everything below is POC
-global :~ 0;
-// Create a background task by declaring it in the global scope
-fork {
-  // Run when `global` == 1
-  select {
-    where global == 1 {
-      // Do something
-    },
-    // Timeout after 1 second
-    timeout 1000 {
-      // Do something else
-    },
+////////////////
+// Web server //
+////////////////
+{
+  // The `fork` before the function block is a shortcut for a block with a single `fork` statement
+  start_server :: () fork {
+    connection :: accept();
+    request :: read(connection);
+    write(connection, 5);
   }
-  where
-  break;
+  accept :: () i32 -> 0;
+  read :: (connection: i32) i32 -> 1;
+  write :: (connection: i32, value: i32) -> {
+    // Do something
+  }
 }
