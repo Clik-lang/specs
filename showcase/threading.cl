@@ -14,7 +14,7 @@ shared_variable :: () {
   assert counter == constant;
 }
 
-nested_tasks :: () {
+counting_fork :: () {
   counter :~ 0;
   counter = 1;
   fork 0..10 {
@@ -27,6 +27,15 @@ nested_tasks :: () {
   // The final value of `counter` is 11
   // Blocks until all the nested forks have exited
   assert counter == 11;
+}
+
+local_fork :: (){
+  counter :~ 0;
+  // the `local` directive can be used to force the fork to run in the current thread
+  // potentially taking advantage of ILP
+  #local fork 0..10 {
+    counter += 1;
+  }
 }
 
 // Create a background task by declaring it in the global scope
