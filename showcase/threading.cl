@@ -30,9 +30,10 @@ nested_tasks :: () {
 }
 
 // Create a background task by declaring it in the global scope
-// Iteration starts when `started` is set to true or when the timeout is reached
 started :~ false;
-fork started == true || #timeout 1000 {
+// Iteration starts when `started` is set to true or when the timeout is reached
+// The `where` keyword makes the loop wait for the condition to be true
+fork where started true || #timeout 1000 {
   break;
 }
 
