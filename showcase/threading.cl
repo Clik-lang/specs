@@ -16,11 +16,6 @@ fork_statement :: () {
   // The final value of `counter` is 11
   // Blocks until all the nested forks have exited
   assert counter == 11;
-
-  // Infinite fork
-  fork {
-    break;
-  }
 }
 
 fork_expression :: () {
@@ -32,8 +27,6 @@ fork_expression :: () {
 
   result_map :: fork i: 0..2 -> map[i32]i32 {i: i + 5};
   assert result_map == map[i32]i32 {0: 5, 1: 6};
-
-  //result_map2 :: fork -> 1; // Error: infinite fork
 }
 
 spawn_basics :: () {
