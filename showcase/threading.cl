@@ -1,22 +1,11 @@
 Point :: struct {x: i32, y: i32}
 
-shared_variable :: () {
-  // Shared variable declared with `~`
-  counter :~ 0;
-
+fork_statement :: () {
   constant: i32 : 1;
   variable: i32 = 1;
-  fork {
-    counter = constant;
-    // counter = variable; // Error: variable is mutable and not shared
-    break; // Exit the task
-  }
-  assert counter == constant;
-}
-
-counting_fork :: () {
+  // Shared variable declared with `~`
   counter :~ 0;
-  counter = 1;
+  // fork statement loop
   fork 0..10 {
     // `counter` is copied into the stack, taking a snapshot of its value before entering the task
     // So in this case, the value of `counter` is 1
@@ -27,9 +16,27 @@ counting_fork :: () {
   // The final value of `counter` is 11
   // Blocks until all the nested forks have exited
   assert counter == 11;
+
+  // Infinite fork
+  fork {
+    break;
+  }
 }
 
-counting_spawn :: () {
+fork_expression :: () {
+  // `fork` expression
+  // The expression is evaluated in parallel
+  // The result is a merge of all the results
+  result :: fork 0..10 -> 1;
+  assert result == 10
+
+  result_map :: fork i: 0..2 -> map[i32]i32 {i: i + 5};
+  assert result_map == map[i32]i32 {0: 5, 1: 6};
+
+  //result_map2 :: fork -> 1; // Error: infinite fork
+}
+
+spawn_basics :: () {
   // `spawn` creates a new task running in the background
   // The task is not joined, so the main thread may not wait for it to finish
   for i: 0..10 -> spawn -> print("Hello: ", i);
