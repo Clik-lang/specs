@@ -34,19 +34,14 @@ counting_spawn :: () {
   // The task is not joined, so the main thread may not wait for it to finish
   for i: 0..10 -> spawn -> print("Hello: ", i);
 
-  // Async tasks cannot access shared variables
+  // Async tasks can access both shared & local variables using the ownership system
   shared :~ 0;
-  spawn {
-    // shared = 1; // Error: variable is not mutable
-  }
-
-  // Variables can be captured using the ownership system
   variable := 0;
-  variable = 1;
   spawn { // TODO: maybe enforce capture syntax `[<name>, ...]`?
+    shared = 2;
     variable = 2;
   }
-  // `variable` is moved into the task, so it cannot be accessed anymore
+  // `shared` & `variable` are moved into the task, so it cannot be accessed anymore
   // variable = 2; // Error: variable is not accessible
 }
 
