@@ -23,7 +23,10 @@ fork_expression :: () {
   // The expression is evaluated in parallel
   // The result is a merge of all the results
   result :: fork 0..10 -> 1;
-  assert result == 10
+  assert result == 10;
+
+  result_array :: fork 0..2 -> [i32] {i, i + 1};
+  assert result_array == [i32] {0, 1, 1, 2};
 
   result_map :: fork i: 0..2 -> map[i32]i32 {i: i + 5};
   assert result_map == map[i32]i32 {0: 5, 1: 6};
